@@ -3,6 +3,7 @@ let state = {
   loggedIn: false,
   user: null,
   plan: 'premium',
+  billing: 'monthly', // 'monthly' or 'annual'
   regStep: 1,
   payMethod: 'stripe'
 };
@@ -26,6 +27,32 @@ function showPage(page) {
   if (page === 'dashboard' && state.loggedIn) {
     updateDashboard();
   }
+}
+
+function togglePricing() {
+  state.billing = state.billing === 'monthly' ? 'annual' : 'monthly';
+  const isAnnual = state.billing === 'annual';
+  
+  document.getElementById('toggle-dot').parentElement.classList.toggle('active', isAnnual);
+  document.getElementById('label-monthly').classList.toggle('active', !isAnnual);
+  document.getElementById('label-annual').classList.toggle('active', isAnnual);
+  
+  // Update prices with discount (20%)
+  const prices = {
+    basic: isAnnual ? 7 : 9,
+    premium: isAnnual ? 23 : 29
+  };
+  
+  gsap.to('#price-basic', { 
+    textContent: prices.basic, 
+    duration: 0.5, 
+    snap: { textContent: 1 } 
+  });
+  gsap.to('#price-premium', { 
+    textContent: prices.premium, 
+    duration: 0.5, 
+    snap: { textContent: 1 } 
+  });
 }
 
 function scrollToPricing() {
@@ -149,6 +176,7 @@ function completeRegistration() {
   updateDashboard();
   showPage('dashboard');
   showToast('🎉 Welcome to ElitePass! Your ' + selectedPlan + ' membership is active!');
+  fireConfetti();
 }
 
 // ===== DASHBOARD =====
@@ -299,7 +327,63 @@ function showToast(msg) {
   setTimeout(() => t.classList.remove('show'), 3500);
 }
 
+// ===== AI CHAT =====
+function toggleAI() {
+  document.getElementById('ai-window').classList.toggle('open');
+}
+
+function sendMessage() {
+  const input = document.getElementById('ai-input');
+  const body = document.getElementById('ai-body');
+  if (!input.value.trim()) return;
+
+  const userMsg = document.createElement('div');
+  userMsg.className = 'ai-msg user';
+  userMsg.textContent = input.value;
+  body.appendChild(userMsg);
+
+  const val = input.value.toLowerCase();
+  input.value = '';
+  body.scrollTop = body.scrollHeight;
+
+  setTimeout(() => {
+    const botMsg = document.createElement('div');
+    botMsg.className = 'ai-msg bot';
+    
+    if (val.includes('hello') || val.includes('hi')) {
+      botMsg.textContent = "Welcome back, Elite member. How can I help you excel today?";
+    } else if (val.includes('plan') || val.includes('membership')) {
+      botMsg.textContent = "You are currently on the " + (state.user?.plan || 'Premium') + " tier. Would you like to see upgrade benefits?";
+    } else if (val.includes('resource') || val.includes('course')) {
+      botMsg.textContent = "I've found 12 new strategic assets tailored to your profile. Check the Members Area!";
+    } else {
+      botMsg.textContent = "I'm analyzing your request. Our strategy team will also be notified of your query.";
+    }
+    
+    body.appendChild(botMsg);
+    body.scrollTop = body.scrollHeight;
+    gsap.from(botMsg, { opacity: 0, x: -10, duration: 0.3 });
+  }, 1000);
+}
+
+// Chart Animations on Dashboard load
+function animateCharts() {
+  gsap.to('.chart-bar .fill', {
+    height: (i, el) => el.parentElement.querySelector('.fill').style.height,
+    duration: 1.5,
+    stagger: 0.1,
+    ease: 'power4.out'
+  });
+}
+
 // Pre-select plan if coming from plan cards
 window.addEventListener('load', () => {
   choosePlan('premium');
 });
+
+// Update updateDashboard to include chart animation
+const originalUpdateDashboard = updateDashboard;
+updateDashboard = function() {
+  originalUpdateDashboard();
+  setTimeout(animateCharts, 300);
+};

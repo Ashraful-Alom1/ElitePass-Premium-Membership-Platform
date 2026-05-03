@@ -4,10 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ElitePass — Premium Membership Platform</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600;1,700;1,900&family=Outfit:wght@300;400;500;600;700;800;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 </head>
 <body>
+<div class="custom-cursor" id="cursor"></div>
+<div class="noise-overlay"></div>
 
 <!-- ===== NAV ===== -->
 <nav>
@@ -35,25 +40,25 @@
     <div class="hero-grid"></div>
     <div style="position:relative;z-index:1;width:100%">
       <div style="text-align:center">
-        <div class="hero-badge">✦ Exclusive Membership Platform</div>
-        <h1>Access the <em>Inner Circle</em><br>of Excellence</h1>
-        <p>Premium membership plans crafted for those who demand more — more value, more resources, more growth. Choose your path.</p>
+        <div class="hero-badge">✦ The Pinnacle of Membership</div>
+        <h1 class="split-text">Experience the <br><em>New Standard</em> of<br>Exclusive Access</h1>
+        <p>A curated ecosystem designed for the visionary. Unlock world-class resources, elite networking, and transformative growth frameworks.</p>
         <div class="hero-actions">
-          <button class="btn btn-gold btn-lg" onclick="showPage('register')">Start Your Membership</button>
-          <button class="btn btn-ghost btn-lg" onclick="scrollToPricing()">View Plans</button>
+          <button class="btn btn-gold btn-lg btn-magnetic" onclick="showPage('register')">Get Started Today</button>
+          <button class="btn btn-ghost btn-lg btn-magnetic" onclick="scrollToPricing()">Explore Plans</button>
         </div>
         <div class="hero-stats">
           <div class="stat">
-            <div class="stat-number">2,400+</div>
-            <div class="stat-label">Active Members</div>
+            <div class="stat-number" data-target="2400">0</div>
+            <div class="stat-label">Elite Members</div>
           </div>
-          <div class="stat" style="border-left:1px solid var(--border);border-right:1px solid var(--border);padding:0 2.5rem">
-            <div class="stat-number">98%</div>
-            <div class="stat-label">Satisfaction Rate</div>
+          <div class="stat" style="border-left:1px solid var(--border-subtle);border-right:1px solid var(--border-subtle);padding:0 2.5rem">
+            <div class="stat-number" data-target="98">0%</div>
+            <div class="stat-label">Member ROI</div>
           </div>
           <div class="stat">
-            <div class="stat-number">150+</div>
-            <div class="stat-label">Exclusive Resources</div>
+            <div class="stat-number" data-target="150">0</div>
+            <div class="stat-label">Global Resources</div>
           </div>
         </div>
       </div>
@@ -72,49 +77,47 @@
 
         <!-- Basic Plan -->
         <div class="plan-card" onclick="selectPlan('basic')">
-          <div class="plan-icon basic">⚡</div>
-          <div class="plan-name">Basic</div>
-          <div class="plan-desc">Perfect for individuals getting started with exclusive access.</div>
+          <div class="plan-icon" style="color:var(--info)">✦</div>
+          <div class="plan-name">Foundational</div>
+          <div class="plan-desc">Essential tools and networking for the emerging visionary.</div>
           <div class="plan-price">
             <span class="currency">$</span>
-            <span class="amount">9</span>
+            <span id="price-basic" class="amount">9</span>
             <span class="period">/month</span>
           </div>
           <ul class="plan-features">
             <li class="included"><span class="check yes">✓</span> Member Dashboard Access</li>
-            <li class="included"><span class="check yes">✓</span> 10 Exclusive Resources</li>
-            <li class="included"><span class="check yes">✓</span> Community Forum Access</li>
-            <li class="included"><span class="check yes">✓</span> Monthly Newsletter</li>
-            <li class="included"><span class="check yes">✓</span> Membership Certificate</li>
-            <li><span class="check no">✕</span> Priority Support</li>
-            <li><span class="check no">✕</span> Advanced Courses</li>
-            <li><span class="check no">✕</span> 1-on-1 Consultations</li>
+            <li class="included"><span class="check yes">✓</span> 10 Exclusive Monthly Resources</li>
+            <li class="included"><span class="check yes">✓</span> Global Community Access</li>
+            <li class="included"><span class="check yes">✓</span> Monthly Growth Insights</li>
+            <li class="included"><span class="check yes">✓</span> Digital Membership Certificate</li>
+            <li><span class="check no">✕</span> 24/7 Priority Concierge</li>
+            <li><span class="check no">✕</span> Advanced 1-on-1 Strategy</li>
           </ul>
-          <button class="btn btn-outline-gold" style="width:100%;justify-content:center" onclick="selectAndRegister('basic')">Get Basic — $9/mo</button>
+          <button class="btn btn-outline-gold" style="width:100%" onclick="selectAndRegister('basic')">Join Foundational</button>
         </div>
 
         <!-- Premium Plan -->
         <div class="plan-card featured" onclick="selectPlan('premium')">
-          <div class="plan-badge">Most Popular</div>
-          <div class="plan-icon premium">👑</div>
-          <div class="plan-name">Premium</div>
-          <div class="plan-desc">Unlock the full experience with all features and priority access.</div>
+          <div class="plan-badge">Most Exclusive</div>
+          <div class="plan-icon" style="color:var(--gold)">💎</div>
+          <div class="plan-name">Elite Circle</div>
+          <div class="plan-desc">The ultimate ecosystem for world-class performance.</div>
           <div class="plan-price">
             <span class="currency">$</span>
-            <span class="amount">29</span>
+            <span id="price-premium" class="amount">29</span>
             <span class="period">/month</span>
           </div>
           <ul class="plan-features">
-            <li class="included"><span class="check yes">✓</span> Member Dashboard Access</li>
-            <li class="included"><span class="check yes">✓</span> Unlimited Resources</li>
-            <li class="included"><span class="check yes">✓</span> Community Forum Access</li>
-            <li class="included"><span class="check yes">✓</span> Weekly Newsletter + Insights</li>
-            <li class="included"><span class="check yes">✓</span> Gold Membership Certificate</li>
-            <li class="included"><span class="check yes">✓</span> Priority 24/7 Support</li>
-            <li class="included"><span class="check yes">✓</span> 50+ Advanced Courses</li>
-            <li class="included"><span class="check yes">✓</span> Monthly 1-on-1 Consultation</li>
+            <li class="included"><span class="check yes">✓</span> Full Dashboard & API Access</li>
+            <li class="included"><span class="check yes">✓</span> Unlimited Library Access</li>
+            <li class="included"><span class="check yes">✓</span> Private Mastermind Access</li>
+            <li class="included"><span class="check yes">✓</span> Weekly Elite Intel Reports</li>
+            <li class="included"><span class="check yes">✓</span> physical Gold Member Card</li>
+            <li class="included"><span class="check yes">✓</span> 24/7 Priority Concierge</li>
+            <li class="included"><span class="check yes">✓</span> Monthly 1-on-1 Strategy</li>
           </ul>
-          <button class="btn btn-gold" style="width:100%;justify-content:center" onclick="selectAndRegister('premium')">Get Premium — $29/mo</button>
+          <button class="btn btn-gold" style="width:100%" onclick="selectAndRegister('premium')">Join Elite Circle</button>
         </div>
 
       </div>
@@ -394,73 +397,79 @@
               </div>
             </div>
 
+            <!-- Analytics Card -->
+            <div class="card" style="margin-bottom:1.5rem">
+              <div class="card-header">
+                <h3>Member Performance ROI</h3>
+                <span class="tag tag-active">Live Metrics</span>
+              </div>
+              <div class="chart-container">
+                <div class="chart-bar" data-label="Jan"><div class="fill" style="height:65%"></div></div>
+                <div class="chart-bar" data-label="Feb"><div class="fill" style="height:45%"></div></div>
+                <div class="chart-bar" data-label="Mar"><div class="fill" style="height:85%"></div></div>
+                <div class="chart-bar" data-label="Apr"><div class="fill" style="height:70%"></div></div>
+                <div class="chart-bar" data-label="May"><div class="fill" style="height:95%"></div></div>
+              </div>
+            </div>
+
             <!-- Resources progress -->
             <div class="card">
               <div class="card-header">
-                <h3>Resource Usage</h3>
-                <span class="tag tag-active">This Month</span>
+                <h3>Growth Milestone</h3>
+                <span class="tag tag-active">Q2 Goals</span>
               </div>
               <div class="progress-wrap">
                 <div class="progress-label">
-                  <span>Courses Completed</span><span>3/10</span>
+                  <span>Elite Courses Mastery</span><span>3/10</span>
                 </div>
                 <div class="progress-bar"><div class="progress-fill" style="width:30%"></div></div>
               </div>
               <div class="progress-wrap" style="margin-top:1rem">
                 <div class="progress-label">
-                  <span>Resources Downloaded</span><span>28/∞</span>
+                  <span>Strategic Assets Secured</span><span>28/∞</span>
                 </div>
                 <div class="progress-bar"><div class="progress-fill" style="width:75%"></div></div>
-              </div>
-              <div class="progress-wrap" style="margin-top:1rem">
-                <div class="progress-label">
-                  <span>Forum Participation</span><span>12 posts</span>
-                </div>
-                <div class="progress-bar"><div class="progress-fill" style="width:55%"></div></div>
               </div>
             </div>
           </div>
 
-          <!-- Activity Feed -->
+          <!-- Community Activity -->
           <div class="card">
             <div class="card-header">
-              <h3>Recent Activity</h3>
-              <span style="font-size:0.75rem;color:var(--text-muted)">Today</span>
+              <h3>Inner Circle Feed</h3>
+              <span style="font-size:0.75rem;color:var(--text-muted)">Real-time</span>
             </div>
-            <div class="activity-feed">
-              <div class="activity-item">
-                <div class="activity-icon" style="background:rgba(46,204,138,0.1)">✅</div>
-                <div class="activity-text">
-                  <div class="action">Certificate downloaded</div>
-                  <div class="time">2 hours ago</div>
+            <div class="community-feed">
+              <div class="feed-item">
+                <div class="feed-avatar" style="background:var(--gold-glow);color:var(--gold)">JS</div>
+                <div class="feed-content">
+                  <span class="feed-name">Julian S.</span>
+                  <span class="feed-action">just completed</span>
+                  <div style="color:var(--text-main);font-weight:500">Advanced Wealth Blueprints</div>
                 </div>
               </div>
-              <div class="activity-item">
-                <div class="activity-icon" style="background:rgba(91,143,255,0.1)">📖</div>
-                <div class="activity-text">
-                  <div class="action">Advanced Course #7 accessed</div>
-                  <div class="time">5 hours ago</div>
+              <div class="feed-item">
+                <div class="feed-avatar" style="background:rgba(91,143,255,0.1);color:var(--blue)">MA</div>
+                <div class="feed-content">
+                  <span class="feed-name">Marcus A.</span>
+                  <span class="feed-action">unlocked</span>
+                  <div style="color:var(--text-main);font-weight:500">Private Mastermind Q3</div>
                 </div>
               </div>
-              <div class="activity-item">
-                <div class="activity-icon" style="background:rgba(201,168,76,0.1)">💬</div>
-                <div class="activity-text">
-                  <div class="action">Forum post replied</div>
-                  <div class="time">Yesterday</div>
+              <div class="feed-item">
+                <div class="feed-avatar" style="background:rgba(46,204,138,0.1);color:var(--success)">SK</div>
+                <div class="feed-content">
+                  <span class="feed-name">Sarah K.</span>
+                  <span class="feed-action">posted in</span>
+                  <div style="color:var(--text-main);font-weight:500">Global Networking Hub</div>
                 </div>
               </div>
-              <div class="activity-item">
-                <div class="activity-icon" style="background:rgba(255,85,102,0.1)">💳</div>
-                <div class="activity-text">
-                  <div class="action">Payment processed — $29</div>
-                  <div class="time">Mar 11, 2026</div>
-                </div>
-              </div>
-              <div class="activity-item">
-                <div class="activity-icon" style="background:rgba(46,204,138,0.1)">🎉</div>
-                <div class="activity-text">
-                  <div class="action">Membership activated</div>
-                  <div class="time">Mar 11, 2026</div>
+              <div class="feed-item">
+                <div class="feed-avatar" style="background:var(--gold-glow);color:var(--gold)">RD</div>
+                <div class="feed-content">
+                  <span class="feed-name">Robert D.</span>
+                  <span class="feed-action">joined</span>
+                  <div style="color:var(--text-main);font-weight:500">Elite Circle Membership</div>
                 </div>
               </div>
             </div>
@@ -697,6 +706,24 @@
   </div>
 </div>
 
+<!-- ===== AI ASSISTANT ===== -->
+<div class="ai-chat-widget">
+  <div class="ai-window" id="ai-window">
+    <div class="ai-header">
+      <div class="status"></div>
+      <div style="font-size:0.9rem;font-weight:700">ElitePass AI Concierge</div>
+    </div>
+    <div class="ai-body" id="ai-body">
+      <div class="ai-msg bot">Hello! I'm your premium concierge. How can I assist your growth today?</div>
+    </div>
+    <div class="ai-footer">
+      <input type="text" class="ai-input" id="ai-input" placeholder="Type your message...">
+      <button class="btn btn-gold" style="padding:0.5rem" onclick="sendMessage()">➤</button>
+    </div>
+  </div>
+  <div class="ai-toggle" onclick="toggleAI()">✦</div>
+</div>
+
 <!-- ===== TOAST ===== -->
 <div class="toast" id="toast">
   <span class="toast-icon" id="toast-icon">✅</span>
@@ -704,5 +731,6 @@
 </div>
 
 <script src="script.js"></script>
+<script src="animations.js"></script>
 </body>
 </html>
