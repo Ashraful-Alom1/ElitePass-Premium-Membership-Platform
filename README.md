@@ -2,6 +2,13 @@
 
 ElitePass is a high-end, state-of-the-art membership platform designed for exclusive communities. Built with a focus on rich aesthetics, smooth interactivity, and a premium user experience.
 
+### 📺 Live Demo
+The project is live and can be accessed at:
+**[https://ashraful-alom1.github.io/ElitePass-Premium-Membership-Platform/](https://ashraful-alom1.github.io/ElitePass-Premium-Membership-Platform/)**
+
+### Instructions:
+1. Click the link above to view the live site.
+
 ## ✨ Advanced Features
 
 - **Premium Design System**: Glassmorphism 2.0, HSL-based dynamic colors, and high-end typography (Outfit & Playfair Display).
